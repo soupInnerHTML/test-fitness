@@ -11,7 +11,7 @@ import {useBookingStore} from '../hooks';
 import {commonStyles} from '../styles/commonStyles';
 import {observer} from 'mobx-react-lite';
 import {MyBookingScreenNavigationProps} from '../types/navigation';
-import {Booking} from '../types/booking';
+import {Booking} from '../store/Booking';
 import {Empty} from '../components/Empty';
 import {BookingElement} from '../components/BookingElement';
 import {ScrollView} from 'react-native-gesture-handler';

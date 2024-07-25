@@ -1,10 +1,5 @@
 import React from 'react';
 
-export interface Booking extends BookingForm {
-  serviceId: number;
-  id: number;
-}
-
 export interface BookingForm {
   name: string;
   phoneNumber: string;

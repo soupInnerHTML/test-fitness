@@ -5,24 +5,22 @@ import {commonStyles} from '../styles/commonStyles';
 import {DEFAULT_INDENT} from '../constants/styles';
 import {useBookingStore, useServicesStore} from '../hooks';
 import {observer} from 'mobx-react-lite';
-import {Booking} from '../types/booking';
-import {DATE_FORMAT} from '../constants/date';
+import {Booking} from '../store/Booking';
 
-export const BookingElement: FC<Booking> = observer(
-  ({name, phoneNumber, comment, date, time, serviceId, id}) => {
+interface BookingElementProps extends Booking {}
+
+export const BookingElement: FC<BookingElementProps> = observer(
+  ({name, phoneNumber, comment, serviceId, id, datetime}) => {
     const {services} = useServicesStore();
     const service = useMemo(
       () => services.find(({id}) => id === serviceId)!,
       [serviceId, services],
     );
     const formattedDate = useMemo(
-      () => dayjs(date, DATE_FORMAT).format('DD MMM YYYY г.'),
-      [date],
+      () => datetime.format('DD MMM YYYY г. в HH:mm'),
+      [datetime],
     );
-    const isPast = useMemo(
-      () => dayjs(date, DATE_FORMAT).isBefore(dayjs()),
-      [date],
-    );
+    const isPast = useMemo(() => datetime.isBefore(dayjs()), [datetime]);
     const bookingStore = useBookingStore();
     function cancelOrDeleteBooking() {
       Alert.alert(
@@ -50,9 +48,7 @@ export const BookingElement: FC<Booking> = observer(
           </Text>
         </View>
         <View style={styles.contacts}>
-          <Text>
-            {formattedDate} в {time}
-          </Text>
+          <Text>{formattedDate}</Text>
           <Text>
             {name} {phoneNumber}
           </Text>
