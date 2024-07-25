@@ -53,6 +53,7 @@ export const MyBookingScreen: FC<MyBookingScreenProps> = observer(() => {
   if (bookingStore.booking.length) {
     return (
       <SectionList
+        stickySectionHeadersEnabled={false}
         renderScrollComponent={props => <ScrollView {...props} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={commonStyles.container}
