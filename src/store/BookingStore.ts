@@ -11,32 +11,28 @@ class BookingStore {
 
   @computed get booking() {
     return [...this._booking].sort((a, b) =>
-      a.datetime.isBefore(b.datetime) ? 1 : -1,
+      a.datetime.isBefore(b.datetime) ? -1 : 1,
     );
   }
 
   @computed get pastBooking() {
-    return this._booking.filter(({datetime}) => dayjs().isAfter(datetime));
+    // сортировка booking выводит самые свежие записи с наименьшей датой
+    // я хочу выводить прошедшие записи в обратном порядке
+    // самая свяжая прошедшая запись === наибольшая дата
+    return [...this.booking]
+      .filter(({datetime}) => dayjs().isAfter(datetime))
+      .reverse();
   }
 
   @computed get futureBooking() {
-    return this._booking.filter(({datetime}) => dayjs().isBefore(datetime));
+    return this.booking.filter(({datetime}) => dayjs().isBefore(datetime));
   }
 
-  @computed private get _lastBookingId(): number {
-    return this._booking.length ? this._booking[0].id : 0;
+  @action.bound addBooking(booking: IBooking) {
+    this._booking.push(new Booking(booking));
   }
 
-  @action.bound addBooking(booking: Omit<IBooking, 'id'>) {
-    this._booking.unshift(
-      new Booking({
-        ...booking,
-        id: this._lastBookingId + 1,
-      }),
-    );
-  }
-
-  @action.bound deleteBooking(bookingId: number) {
+  @action.bound deleteBooking(bookingId: string) {
     this._booking = this._booking.filter(({id}) => bookingId !== id);
   }
   @action.bound mapHydrateBookings() {

@@ -60,7 +60,7 @@ export const MyBookingScreen: FC<MyBookingScreenProps> = observer(() => {
         sections={sections}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id}
       />
     );
   }
