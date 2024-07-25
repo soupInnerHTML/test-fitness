@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class BookingStore {
   @persist('list') @observable booking: Booking[] = [];
 
-  @computed get _lastBookingId(): number {
+  @computed private get _lastBookingId(): number {
     return this.booking.length && this.booking[this.booking.length - 1].id;
   }
 
