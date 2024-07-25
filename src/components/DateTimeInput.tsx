@@ -13,31 +13,46 @@ export const DateTimeInput: FC<DateTimeInputProps> = ({
   mode,
   ...props
 }) => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const isTimeMode = mode === 'time';
+  const [date, setDate] = useState(() => {
+    if (isTimeMode) {
+      const now = dayjs();
+      const minutes = now.minute();
+      const next30Minutes = now
+        .add(30 - (minutes % 30), 'minute')
+        .second(0)
+        .millisecond(0);
+      return next30Minutes.toDate();
+    } else {
+      return new Date();
+    }
+  });
   return (
     <View>
       <DatePicker
         mode={mode}
-        minimumDate={new Date()}
+        minimumDate={date}
         modal
         minuteInterval={30}
-        open={open}
-        date={new Date()}
-        onConfirm={date => {
-          setOpen(false);
-          const parsedDate = dayjs(date).format(
-            mode === 'time' ? TIME_FORMAT : DATE_FORMAT,
+        open={isOpen}
+        date={date}
+        onConfirm={newDate => {
+          setDate(newDate);
+          setIsOpen(false);
+          const parsedDate = dayjs(newDate).format(
+            isTimeMode ? TIME_FORMAT : DATE_FORMAT,
           );
           props.onChangeText?.(parsedDate);
         }}
         onCancel={() => {
-          setOpen(false);
+          setIsOpen(false);
         }}
       />
       <TextInputMask
         onFocus={e => {
           onFocus?.(e);
-          setOpen(true);
+          setIsOpen(true);
         }}
         {...props}
       />

@@ -10,6 +10,8 @@ import {
   timeRegExp,
 } from '../constants/regexp';
 import {BookingForm, BookingFormField} from '../types/booking';
+import dayjs from 'dayjs';
+import {DATE_FORMAT, DATETIME_FORMAT} from '../constants/date';
 
 export const bookingFormInitialValues: BookingForm = {
   name: '',
@@ -37,11 +39,23 @@ export const BookingFormValidationSchema: yup.Schema<
   date: yup
     .string()
     .required(requiredMessage)
-    .matches(dateRegExp, 'Неверная дата'),
+    .matches(dateRegExp, 'Неверная дата')
+    .test('isFutureOrTodayDate', 'Неверная дата', value => {
+      const date = dayjs(value, DATE_FORMAT);
+      return date.isSame(dayjs(), 'day') || date.isAfter(dayjs());
+    }),
   time: yup
     .string()
     .required(requiredMessage)
-    .matches(timeRegExp, 'Неверное время'),
+    .matches(timeRegExp, 'Неверное время')
+    .test('isFuture', 'Неверное время', function (value) {
+      const {date} = this.parent;
+      if (!date) {
+        return true;
+      }
+      const dateTime = dayjs(`${date} ${value}`, DATETIME_FORMAT);
+      return dateTime.isAfter(dayjs());
+    }),
   comment: yup.string(),
 });
 

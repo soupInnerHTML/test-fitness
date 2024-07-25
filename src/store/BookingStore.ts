@@ -2,7 +2,6 @@ import {action, computed, makeObservable, observable} from 'mobx';
 import {create, persist} from 'mobx-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
-import {DATETIME_FORMAT} from '../constants/date';
 import {Booking, IBooking} from './Booking';
 
 class BookingStore {
@@ -12,24 +11,16 @@ class BookingStore {
 
   @computed get booking() {
     return [...this._booking].sort((a, b) =>
-      dayjs(a.datetime, DATETIME_FORMAT).isBefore(
-        dayjs(b.datetime, DATETIME_FORMAT),
-      )
-        ? 1
-        : -1,
+      a.datetime.isBefore(b.datetime) ? 1 : -1,
     );
   }
 
   @computed get pastBooking() {
-    return this._booking.filter(({datetime}) =>
-      dayjs().isAfter(dayjs(datetime, DATETIME_FORMAT)),
-    );
+    return this._booking.filter(({datetime}) => dayjs().isAfter(datetime));
   }
 
   @computed get futureBooking() {
-    return this._booking.filter(({datetime}) =>
-      dayjs().isBefore(dayjs(datetime, DATETIME_FORMAT)),
-    );
+    return this._booking.filter(({datetime}) => dayjs().isBefore(datetime));
   }
 
   @computed private get _lastBookingId(): number {
