@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {TextInputMask, TextInputMaskProps} from 'react-native-masked-text';
 import dayjs from 'dayjs';
+import {DATE_FORMAT, TIME_FORMAT} from '../constants/date';
 
 interface DateTimeInputProps extends TextInputMaskProps {
   mode?: 'date' | 'time' | 'datetime';
@@ -25,7 +26,7 @@ export const DateTimeInput: FC<DateTimeInputProps> = ({
         onConfirm={date => {
           setOpen(false);
           const parsedDate = dayjs(date).format(
-            mode === 'time' ? 'HH:mm' : 'DD.MM.YYYY',
+            mode === 'time' ? TIME_FORMAT : DATE_FORMAT,
           );
           props.onChangeText?.(parsedDate);
         }}

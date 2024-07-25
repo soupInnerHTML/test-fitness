@@ -13,7 +13,7 @@ const ServicesScreen: React.FC<ServicesScreenProps> = observer(
     const store = useServicesStore();
     useLayoutEffect(() => {
       navigation.setOptions({
-        title: store.selectedCategory ?? 'Тренировки',
+        title: store.selectedCategory ?? 'Все категории',
       });
 
       return () => {

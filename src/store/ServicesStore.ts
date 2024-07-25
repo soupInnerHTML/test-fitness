@@ -41,7 +41,9 @@ class ServicesStore {
         const isMatchFilters = this._filter
           ? this._isServiceMatchFilters(service)
           : true;
-        return isSelectedCategory && isMatchFilters;
+        return this.selectedCategory === ServiceCategory.all
+          ? isMatchFilters
+          : isSelectedCategory && isMatchFilters;
       });
     }
     return this.services;

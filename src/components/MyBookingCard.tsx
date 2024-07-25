@@ -17,10 +17,10 @@ export const MyBookingCard: FC = observer(() => {
         style={[commonStyles.card, styles.booking]}
         onPress={() => navigation.navigate(ROUTES.MY_BOOKING)}>
         <Text>Мои записи</Text>
-        {!!booking.booking.length && (
+        {!!booking._booking.length && (
           <View style={styles.bookingIndicatorContainer}>
             <Text style={[commonStyles.title, styles.bookingIndicator]}>
-              {booking.booking.length}
+              {booking._booking.length}
             </Text>
           </View>
         )}

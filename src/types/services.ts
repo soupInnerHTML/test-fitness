@@ -3,6 +3,7 @@ export enum ServiceCategory {
   personal = 'Персональные',
   fights = 'Боевые исскусства',
   new = 'Новая категория',
+  all = 'Все категории',
 }
 
 export interface Service {

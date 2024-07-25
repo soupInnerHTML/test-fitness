@@ -3,7 +3,12 @@ import React from 'react';
 import {TextInputMask} from 'react-native-masked-text';
 import {DateTimeInput} from '../components/DateTimeInput';
 import * as yup from 'yup';
-import {dateRegExp, phoneRegExp, timeRegExp} from '../constants/regexp';
+import {
+  dateRegExp,
+  nameRegExp,
+  phoneRegExp,
+  timeRegExp,
+} from '../constants/regexp';
 import {BookingForm, BookingFormField} from '../types/booking';
 
 export const bookingFormInitialValues: BookingForm = {
@@ -19,7 +24,12 @@ const requiredMessage = 'Это обязательное поле';
 export const BookingFormValidationSchema: yup.Schema<
   typeof bookingFormInitialValues
 > = yup.object().shape({
-  name: yup.string().required(requiredMessage).min(2, 'Имя слишком короткое'),
+  name: yup
+    .string()
+    .required(requiredMessage)
+    .min(2, 'Имя слишком короткое')
+    .max(50, 'Имя не помещается в рамки восприятия')
+    .matches(nameRegExp, 'Некорректное имя'),
   phoneNumber: yup
     .string()
     .required(requiredMessage)

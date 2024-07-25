@@ -1,4 +1,5 @@
 import {ServiceCategory} from '../../../types/services';
+import AllImage from './all.jpg';
 import GroupImage from './group.jpg';
 import PersonalImage from './personal.jpg';
 import FightsImage from './fights.jpg';
@@ -12,4 +13,5 @@ export const serviceCategoriesImages: Record<
   [ServiceCategory.personal]: PersonalImage,
   [ServiceCategory.fights]: FightsImage,
   [ServiceCategory.new]: GroupImage,
+  [ServiceCategory.all]: AllImage,
 };
